@@ -15,17 +15,19 @@ export class AppComponent implements OnInit {
   modifiedList: object[];
   orderBy: string;
   orderType: string;
-
+  lastIndex: number;
 
 
   deleteApt(theApt: object){
     this.theList = without(this.theList, theApt);
     this.modifiedList = without(this.theList, theApt);
   }
-  addApt(theApt: object){
+  addApt(theApt: any){
+    theApt.aptId = this.lastIndex;
     this.theList.unshift(theApt);
     //unshift is JS function pushing at the begining of array
     this.modifiedList.unshift(theApt);
+    this.lastIndex++;
   }
   searchApt(theQuery:string){
     this.modifiedList= this.theList.filter(eachItem => {
@@ -68,9 +70,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit():void{
-    this.http.get<Object[]>('../assets/data.json').subscribe(data => {
+      this.lastIndex = 0;  
+      this.http.get<Object[]>('../assets/data.json').subscribe(data => {
       console.log("Recieving Data =>"+data);
-      this.theList = data;
+      this.theList = data.map((item:any) => {
+        item.aptId = this.lastIndex++;
+        return item;
+      });
       this.modifiedList = data;
       this.sortItems();
     });
