@@ -14,6 +14,7 @@
           ></app-search>
           <app-list [appointmentList]="modifiedList"
           (deleteEvent) = "deleteApt($event)"          
+          (updateEvent) = "updateApt($event)"          
           >
           </app-list>
         </div>

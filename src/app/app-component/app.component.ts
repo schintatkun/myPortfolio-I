@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { without } from 'lodash';
+import { without, findIndex } from 'lodash';
 
 library.add(faTimes, faPlus);
 
@@ -22,6 +22,20 @@ export class AppComponent implements OnInit {
     this.theList = without(this.theList, theApt);
     this.modifiedList = without(this.theList, theApt);
   }
+  updateApt(aptInfo){
+    let aptIndex: number;
+    let modifiedIndex: number;
+    
+    //method from lodash "findIndex"
+    aptIndex = findIndex(this.theList, {aptId: aptInfo.theApt.aptId});
+    modifiedIndex = findIndex(this.modifiedList, {aptId: aptInfo.theApt.aptId});
+
+    this.theList[aptIndex][aptInfo.labelName] = aptInfo.newValue; 
+    this.modifiedList[modifiedIndex][aptInfo.labelName] = aptInfo.newValue; 
+
+  }
+
+
   addApt(theApt: any){
     theApt.aptId = this.lastIndex;
     this.theList.unshift(theApt);
