@@ -11,8 +11,8 @@ library.add(faTimes, faPlus);
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  title = 'Wisdom Pet Medicine';
   theList: object[];
+  modifiedList: object[];
 
   deleteApt(theApt: object){
     this.theList = without(this.theList, theApt);
@@ -21,6 +21,15 @@ export class AppComponent implements OnInit {
     this.theList.unshift(theApt);
     //unshift is JS function pushing at the begining of array
   }
+  searchApt(theQuery:string){
+    this.modifiedList= this.theList.filter(eachItem => {
+      return (
+        eachItem['petName'].toLowerCase().includes(theQuery.toLowerCase()) ||
+        eachItem['ownerName'].toLowerCase().includes(theQuery.toLowerCase()) ||
+        eachItem['aptNotes'].toLowerCase().includes(theQuery.toLowerCase())
+      );
+    });
+  }
 
   constructor (private http: HttpClient) {}
 
@@ -28,6 +37,7 @@ export class AppComponent implements OnInit {
     this.http.get<Object[]>('../assets/data.json').subscribe(data => {
       console.log("Recieving Data =>"+data);
       this.theList = data;
+      this.modifiedList = data;
     });
   }
 
