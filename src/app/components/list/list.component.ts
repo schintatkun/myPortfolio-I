@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
+  //bring thing from another component
+  @Input() appointmentList;
 
-  constructor() { }
+  //when user click, then create event and pass event to parent component. 
+  @Output() deleteEvent = new EventEmitter();
 
-  ngOnInit() {
+  handleDelete(theApt: object){
+    // console.log(theApt);
+    this.deleteEvent.emit(theApt);
   }
 
 }

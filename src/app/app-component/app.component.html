@@ -5,6 +5,12 @@
 
         <div class="container">
           <h2 class="py-5">{{title}}</h2>
+          <app-add></app-add>
+          <app-search></app-search>
+          <app-list [appointmentList]="theList"
+          (deleteEvent) = "deleteApt($event)"          
+          >
+          </app-list>
         </div>
 
       </div><!-- col-md-12 -->
