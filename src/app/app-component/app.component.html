@@ -6,7 +6,12 @@
         <div class="container">
           <app-add (addEvent)="addApt($event)"></app-add>
           <!-- capture event when user type -->
-          <app-search (queryEvent)="searchApt($event)"></app-search>
+          <app-search 
+          (queryEvent)="searchApt($event)"
+          (orderEvent)="orderApt($event)"
+          [orderBy]="orderBy"
+          [orderType]="orderType"
+          ></app-search>
           <app-list [appointmentList]="modifiedList"
           (deleteEvent) = "deleteApt($event)"          
           >

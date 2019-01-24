@@ -13,13 +13,19 @@ library.add(faTimes, faPlus);
 export class AppComponent implements OnInit {
   theList: object[];
   modifiedList: object[];
+  orderBy: string;
+  orderType: string;
+
+
 
   deleteApt(theApt: object){
     this.theList = without(this.theList, theApt);
+    this.modifiedList = without(this.theList, theApt);
   }
   addApt(theApt: object){
     this.theList.unshift(theApt);
     //unshift is JS function pushing at the begining of array
+    this.modifiedList.unshift(theApt);
   }
   searchApt(theQuery:string){
     this.modifiedList= this.theList.filter(eachItem => {
@@ -31,13 +37,42 @@ export class AppComponent implements OnInit {
     });
   }
 
-  constructor (private http: HttpClient) {}
+  sortItems(){
+    let order: number;
+    if(this.orderType ==='asc') {
+      order = 1;
+    }
+    else{
+      order = -1;
+    }
+
+    this.modifiedList.sort((a,b) => {
+      if (a[this.orderBy].toLowerCase() < b[this.orderBy].toLowerCase()){
+        return -1*order;
+      }
+      if (a[this.orderBy].toLowerCase() > b[this.orderBy].toLowerCase()) {
+        return 1*order;
+      }
+    })
+  }
+
+  orderApt(orderObj){
+    this.orderBy = orderObj.orderBy;
+    this.orderType = orderObj.orderType;
+    this.sortItems();
+  }
+
+  constructor (private http: HttpClient) {
+    this.orderBy = 'petName';
+    this.orderType = 'asc';
+  }
 
   ngOnInit():void{
     this.http.get<Object[]>('../assets/data.json').subscribe(data => {
       console.log("Recieving Data =>"+data);
       this.theList = data;
       this.modifiedList = data;
+      this.sortItems();
     });
   }
 
