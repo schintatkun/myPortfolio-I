@@ -19,8 +19,6 @@ export class SearchComponent implements OnInit {
     this.orderEvent.emit(orderItems);
   }
   constructor() { }
-
   ngOnInit() {
   }
-
 }
